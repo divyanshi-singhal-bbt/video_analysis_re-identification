@@ -1,0 +1,15 @@
+streamlit==1.35.0
+opencv-python-headless==4.9.0.80
+ultralytics==8.2.18
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
+
+numpy==1.26.4
+scikit-learn==1.4.2
+pandas==2.2.2
+matplotlib==3.8.4
+imageio==2.34.1
+imageio-ffmpeg==0.4.9
+Pillow==10.3.0

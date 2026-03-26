@@ -9,8 +9,6 @@
 FROM python:3.10-slim
 
 # ── System deps ────────────────────────────────────────────────────────────────
-# libGL + libGlib  → OpenCV
-# ffmpeg           → imageio-ffmpeg video re-encoding (H.264 browser output)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libgl1 \
         libglib2.0-0 \
@@ -24,17 +22,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # ── Python dependencies ────────────────────────────────────────────────────────
-# Copy requirements first so this layer is cached on code-only changes
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir \
+# Install numpy first (pinned <2.0) so torch sees the correct ABI
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir "numpy>=1.26.4,<2.0.0" && \
+    pip install --no-cache-dir \
         --extra-index-url https://download.pytorch.org/whl/cpu \
         torch==2.2.2+cpu \
         torchvision==0.17.2+cpu && \
     pip install --no-cache-dir -r requirements.txt
 
 # ── Pre-download YOLOv8n weights (~6 MB) ──────────────────────────────────────
-# Baked into the image so the container works fully offline on EC2
 RUN python -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
 
 # ── Copy application ───────────────────────────────────────────────────────────

@@ -28,6 +28,19 @@ if "result" not in st.session_state:
 
 # ── Sidebar ───────────────────────────────────────────────
 st.sidebar.header("⚙️ Settings")
+if st.sidebar.button("🔄 Reset App"):
+    import gc
+    import glob
+    for f in glob.glob("*_out.mp4"):
+        try: os.remove(f)
+        except: pass
+
+    for f in glob.glob("*_h264.mp4"):
+        try: os.remove(f)
+        except: pass
+    st.session_state.clear()
+    gc.collect()
+    st.rerun()
 CONF_THRESHOLD       = st.sidebar.slider("YOLO Confidence",           0.1,  0.9,  0.40, 0.05)
 ENTRY_LINE_Y_RATIO   = st.sidebar.slider("Entry Line Y (0=top)",      0.1,  0.6,  0.35, 0.05)
 EXIT_LINE_Y_RATIO    = st.sidebar.slider("Exit Line Y  (0=top)",      0.4,  0.9,  0.65, 0.05)
@@ -373,10 +386,44 @@ def plot_analytics(db, events):
     return fig
 
 # ── Main UI ───────────────────────────────────────────────
+# video_file = st.file_uploader("Upload a video", type=["mp4", "avi", "mov", "mkv"])
+
+# if video_file:
+#     st.video(video_file)
+#     if st.button("Run Detection"):
+#         st.session_state.result = None
+#         suffix = Path(video_file.name).suffix or ".mp4"
+#         tmp    = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+#         tmp.write(video_file.read()); tmp.close()
+
+#         st.subheader("Processing...")
+#         cfg = dict(conf_thr=CONF_THRESHOLD, entry_y=ENTRY_LINE_Y_RATIO,
+#                    exit_y=EXIT_LINE_Y_RATIO, sim_thr=SIMILARITY_THRESHOLD,
+#                    min_track_frames=MIN_TRACK_FRAMES, frame_skip=FRAME_SKIP)
+#         try:
+#             result = run_pipeline(tmp.name, cfg)
+#             st.session_state.result = result
+#         except Exception as e:
+#             st.error(f"Error: {e}"); st.exception(e)
+#         finally:
+#             try: os.unlink(tmp.name)
+#             except: pass
+
+# ── Main UI ───────────────────────────────────────────────
 video_file = st.file_uploader("Upload a video", type=["mp4", "avi", "mov", "mkv"])
 
 if video_file:
+
+    # 🔥 Clear previous state when a new file is uploaded
+    if "last_uploaded_file" not in st.session_state:
+        st.session_state.last_uploaded_file = None
+
+    if st.session_state.last_uploaded_file != video_file.name:
+        st.session_state.result = None
+        st.session_state.last_uploaded_file = video_file.name
+
     st.video(video_file)
+
     if st.button("Run Detection"):
         st.session_state.result = None
         suffix = Path(video_file.name).suffix or ".mp4"
@@ -431,7 +478,7 @@ if st.session_state.result:
         except Exception as e:
             st.warning(f"Re-encode failed: {e}")
             with open(out_path, "rb") as f: vbytes = f.read()
-        st.video(vbytes)
+        # st.video(vbytes)
         st.download_button("⬇ Download Video", vbytes,
                            file_name="output_reid.mp4", mime="video/mp4")
 

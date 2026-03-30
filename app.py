@@ -6,8 +6,22 @@ from collections import defaultdict
 from pathlib import Path
 
 st.set_page_config(page_title="Footfall Detection", layout="centered")
-st.title("Footfall Detection")
+col1, col2 = st.columns([25, 15])
+
+with col1:
+    st.title("Footfall Detection")
+
+with col2:
+    st.image("logo.png", width=400)
+
 st.caption("YOLOv8n · BoT-SORT · Fast ReID")
+# st.title("Footfall Detection")
+# col1, col2 = st.columns([8, 4])
+# with col1:
+#     st.caption("YOLOv8n · BoT-SORT · Fast ReID")
+# with col2:
+#     st.image("logo.png", width='stretch')
+# st.caption("YOLOv8n · BoT-SORT · Fast ReID")
 
 if "result" not in st.session_state:
     st.session_state.result = None

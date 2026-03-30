@@ -37,7 +37,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 RUN python -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
 
 # ── Copy application ───────────────────────────────────────────────────────────
-COPY app.py .
+COPY . .
 
 # ── Streamlit config ───────────────────────────────────────────────────────────
 RUN mkdir -p /root/.streamlit

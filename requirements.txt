@@ -1,19 +1,8 @@
-# ── Web UI ─────────────────────────────────────────────────────────────────────
-streamlit>=1.35.0
-
-# ── Computer Vision ────────────────────────────────────────────────────────────
-opencv-python-headless>=4.9.0.80
-ultralytics>=8.2.18
-
-# ── ML / Numerics ──────────────────────────────────────────────────────────────
-numpy>=1.26.4,<2.0.0
-scikit-learn>=1.4.2
-pandas>=2.2.2
-matplotlib>=3.8.4
-
-# ── Video re-encoding (for browser-compatible H.264 output) ───────────────────
-imageio>=2.34.1
-imageio-ffmpeg>=0.4.9
-
-# ── Utilities ─────────────────────────────────────────────────────────────────
-Pillow>=10.3.0
+streamlit
+opencv-python
+numpy
+pandas
+boto3
+matplotlib
+scikit-learn
+ultralytics

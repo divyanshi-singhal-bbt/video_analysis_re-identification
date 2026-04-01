@@ -1,8 +1,7 @@
 streamlit
-opencv-python
-numpy
 pandas
 boto3
 matplotlib
 scikit-learn
 ultralytics
+opencv-python-headless

@@ -1,0 +1,8 @@
+numpy>=1.23
+opencv-python>=4.8
+torch>=2.0
+torchvision>=0.15
+ultralytics>=8.0.0
+deep-sort-realtime>=1.3.2
+torchreid>=0.2.5
+pinecone>=3.0.0
